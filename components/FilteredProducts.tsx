@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-export default function FilterProducts({ handleFilterProducts }) {
+export default function FilteredProducts({ handleFilterProducts }) {
   return (
     <>
       <label htmlFor='products'>Choose a product category:</label>

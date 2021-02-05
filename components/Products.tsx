@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState, useEffect } from "react";
-import FilterProducts from "./FilterProducts";
+import FilteredProducts from "./FilteredProducts";
 import Product from "./Product";
 
 type ProductObj = {
@@ -15,7 +15,7 @@ type ProductObj = {
 
 export default function Products() {
   const [products, setProducts] = useState<ProductObj[] | null>([]);
-  const [filteredProducts, setFilteredProducts] = useState(null);
+  const [filterValue, setFilterValue] = useState("all");
 
   useEffect(() => {
     async function fetchProducts() {
@@ -26,7 +26,10 @@ export default function Products() {
     fetchProducts();
   }, []);
 
-  const productsToShow = filteredProducts ? filteredProducts : products;
+  const productsToShow =
+    filterValue === "all"
+      ? products
+      : products.filter((product) => product.category === filterValue);
 
   const showProducts = productsToShow.map((product) => (
     <Product
@@ -39,21 +42,13 @@ export default function Products() {
     />
   ));
 
-  console.log(products);
-
   const handleFilterProducts = (e) => {
-    const { value } = e.target;
-    if (value === "all") {
-      setFilteredProducts(products);
-      return;
-    }
-    const result = products.filter((product) => product.category === value);
-    setFilteredProducts(result);
+    setFilterValue(e.target.value);
   };
 
   return (
     <>
-      <FilterProducts handleFilterProducts={handleFilterProducts} />
+      <FilteredProducts handleFilterProducts={handleFilterProducts} />
       <div className='flex flex-col content-center space-y-2 w-6/12'>
         {products && showProducts}
       </div>
